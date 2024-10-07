@@ -105,7 +105,7 @@ public class ADN_Mutant {
 
     private static boolean checkSequence(String sequence) {
         for (int i = 0; i <= sequence.length() - MIN; i++) {
-            char index = sequence.charAt(i);
+            index = sequence.charAt(i);
             if (index == sequence.charAt(i + 1) &&
                     index == sequence.charAt(i + 2) &&
                     index == sequence.charAt(i + 3)) {

@@ -54,8 +54,8 @@ public class ADN_Mutant {
     }
 
     public static boolean checkColumns() {
-        for (int col = 0; col < columns-1; col++) {
-            for (int row = 0; row < rows-3; row++) {
+        for (int col = 0; col < columns - 1; col++) {
+            for (int row = 0; row < rows - 3; row++) {
                 firstChar = dna[row].charAt(col);
                 fourthChar = dna[row + 3].charAt(col);
                 if (firstChar == fourthChar) {
@@ -71,8 +71,8 @@ public class ADN_Mutant {
     }
 
     private static boolean checkDiagonals() {
-        for (int row = 0; row < rows-3; row++) {
-            for (int column = 0; column < columns-3; column++) {
+        for (int row = 0; row < rows - 3; row++) {
+            for (int column = 0; column < columns - 3; column++) {
                 firstChar = dna[row].charAt(column);
                 fourthChar = dna[row + 3].charAt(column + 3);
                 if (firstChar == fourthChar) {

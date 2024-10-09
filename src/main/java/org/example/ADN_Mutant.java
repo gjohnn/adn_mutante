@@ -1,51 +1,31 @@
 package org.example;
 
 public class ADN_Mutant {
-    public static int MIN = 4;
     public static String[] dna;
-    static int rows;
-    static int columns;
-    static char firstChar;
-    static char fourthChar;
 
     public static void main(String[] args) {
-        dna = new String[]{
-                "ATGCGT",
-                "TGTTCG",
-                "GCTCTG",
-                "CTTACG",
-                "TGAACC",
-        };
-        rows = dna.length;
-        columns = dna.length;
-        if (isMutant()) {
-            System.out.println("Es mutante");
-        } else {
-            System.out.println("NO es mutante");
-        }
+        System.out.println(isMutant() ? "Es mutante" : "NO es mutante");
     }
 
     public static boolean isMutant() {
-        return checkRows() || checkColumns() || checkDiagonals() || checkInverseDiagonals();
-    }
-
-    private static boolean checkRows() {
-        for (String fila : dna) {
-            if (checkSequence(fila)) {
-                System.out.println("FILA");
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean checkSequence(String sequence) {
-        for (int i = 0; i <= sequence.length() - MIN; i++) {
-            firstChar = sequence.charAt(i);
-            fourthChar = sequence.charAt(i + 3);
-            if (firstChar == fourthChar) {
-                if (firstChar == sequence.charAt(i + 1) &&
-                        firstChar == sequence.charAt(i + 2)) {
+        int n = dna.length;
+        int marcoSkip = 4;
+        for (int i = 0; i < dna.length; i++) {
+            for (int j = 0; j < dna.length; j++) {
+                // Revisión horizontal HECHO
+                if (j <= n - marcoSkip && checkSequence(dna, i, j, 0, 1)) {
+                    return true;
+                }
+                //Revisión vertical HECHO
+                if (i <= n - marcoSkip && checkSequence(dna, i, j, 1, 0)) {
+                    return true;
+                }
+                // Revisión diagonal ↘ 
+                if (i <= n - marcoSkip && j <= n - marcoSkip && checkSequence(dna, i, j, 1, 1)) {
+                    return true;
+                }
+                // Revisión diagonal inversa ↙ 
+                if (i <= n - marcoSkip && j >= marcoSkip - 1 && checkSequence(dna, i, j, 1, -1)) {
                     return true;
                 }
             }
@@ -53,53 +33,17 @@ public class ADN_Mutant {
         return false;
     }
 
-    public static boolean checkColumns() {
-        for (int col = 0; col < columns - 1; col++) {
-            for (int row = 0; row < rows - 3; row++) {
-                firstChar = dna[row].charAt(col);
-                fourthChar = dna[row + 3].charAt(col);
-                if (firstChar == fourthChar) {
-                    if (firstChar == dna[row + 1].charAt(col) &&
-                            firstChar == dna[row + 2].charAt(col)) {
-                        System.out.println("COLUMNA");
-                        return true;
-                    }
-                }
+    public static boolean checkSequence(String[] dna, int row, int col, int rowDir, int colDir) {
+        char initial = dna[row].charAt(col); // Posicion inicial
+        int cant = 0; // Iniciar variable de cantidad
+        for (int i = 1; i < 4; i++) {  // Itera solo 4 posiciones consecutivas
+            // Verifica si las letras consecutivas son iguales en la dirección dada
+            if (dna[row + i * rowDir].charAt(col + i * colDir) == initial) {
+                cant++;  // Si encuentra una que no coincide, regresa false
+            } else {
+                return false;
             }
         }
-        return false;
-    }
-
-    private static boolean checkDiagonals() {
-        for (int row = 0; row < rows - 3; row++) {
-            for (int column = 0; column < columns - 3; column++) {
-                firstChar = dna[row].charAt(column);
-                fourthChar = dna[row + 3].charAt(column + 3);
-                if (firstChar == fourthChar) {
-                    if (firstChar == dna[row + 1].charAt(column + 1) && firstChar == dna[row + 2].charAt(column + 2)) {
-                        System.out.println("DIAGONAL");
-                        return true;
-                    }
-
-                }
-            }
-        }
-        return false;
-    }
-
-    private static boolean checkInverseDiagonals() {
-        for (int row = 0; row < rows - 3; row++) {
-            for (int column = columns - 1; column > 2; column--) {
-                firstChar = dna[row].charAt(column);
-                fourthChar = dna[row + 3].charAt(column - 3);
-                if (firstChar == fourthChar) {
-                    if (firstChar == dna[row + 1].charAt(column - 1) && firstChar == dna[row + 2].charAt(column - 2)) {
-                        System.out.println("DIAGONAL INVERSA");
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        return cant >= 3;
     }
 }
